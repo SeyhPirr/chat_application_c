@@ -85,7 +85,6 @@
   
   // SUNUCU TARAFI KODLARI
   // baglantiya sahip istemcilerin bilgilerini tutabilmek icin olusturulmus bir yapidir.
-  struct
   struct AcceptedSocket
   {
     int acceptedSocketFD;
@@ -93,7 +92,7 @@
     int error;
     bool acceptedSuccessfully;
   };
-  
+  struct acceptedSocket acceptedSockets[];
   // accept incoming connection fonksiyonundan yararlanir donen socket verilerini 
   // acceptedSockets arrayinde saklar
   // recieve and print incoming data fonksiyonundan yararlanarak yeni client icin
