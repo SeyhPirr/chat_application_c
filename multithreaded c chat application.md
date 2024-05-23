@@ -93,6 +93,7 @@
     bool acceptedSuccessfully;
   };
   struct acceptedSocket acceptedSockets[];
+  int acceptedSocketsCount=0;
   // accept incoming connection fonksiyonundan yararlanir donen socket verilerini 
   // acceptedSockets arrayinde saklar
   // recieve and print incoming data fonksiyonundan yararlanarak yeni client icin
