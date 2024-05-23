@@ -85,6 +85,7 @@
   
   // SUNUCU TARAFI KODLARI
   // baglantiya sahip istemcilerin bilgilerini tutabilmek icin olusturulmus bir yapidir.
+  struct
   struct AcceptedSocket
   {
     int acceptedSocketFD;
@@ -145,6 +146,28 @@
     }
     close(socketFD);
   }
-  
-  
+  //Bu fonksiyon kabul edilmis butun istemcilere sunucuya gelmis veriyi yollar
+  void sendReceivedMessageToTheOtherClients(char *buffer,int socketFD) {
+    for(int i = 0 ; i<acceptedSocketsCount ; i++)
+      if(acceptedSockets[i].acceptedSocketFD !=socketFD)
+      {
+        send(acceptedSockets[i].acceptedSocketFD,buffer, strlen(buffer),0);
+      }
+  }
+  // sunucu tarafinin main fonksiyonu  socket olusturduktan address structini doldurduktan
+  // sonra bind eder sonrasinda bind ettigi portta dinleyemeye baslar
+  // 10 backlog degeriyle dinlemeye baslar
+  // kabul ettigi her istemci icin ayri bir thread olusturarak gelen verileri butun
+  // istemcilere yollar process bittiginde shutdown eder.
+  int main() {
+    int serverSocketFD = createTCPIpv4Socket();
+    struct sockaddr_in *serverAddress = createIPv4Address("",2000);
+    int result = bind(serverSocketFD,serverAddress, sizeof(*serverAddress));
+    if(result == 0)
+      printf("socket was bound successfully\n");
+    int listenResult = listen(serverSocketFD,10);
+    startAcceptingIncomingConnections(serverSocketFD);
+    shutdown(serverSocketFD,SHUT_RDWR);
+    return 0;
+  }
   ```
